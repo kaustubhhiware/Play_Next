@@ -10,4 +10,4 @@ Things added:
 * Stackoverflow answers linked. The hover bubble is kept simple for now. Additional work can be done via this [bubble css file](http://nicolasgallagher.com/pure-css-speech-bubbles/demo/).
 * Adding a screenshot below.
 
-![screenshot](screenshot.png)
+![screenshot](screenshot_modified.png)
