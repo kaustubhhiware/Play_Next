@@ -6,3 +6,29 @@
 	margin-bottom: 11px !important;
     /*add !important to make sure our button gets the styles we want 
 }*/
+
+.crx_mouse_visited {
+  background-color: #bcd5eb !important;
+  outline: 1px solid #5166bb !important;
+}
+
+/*style bubbles: http://nicolasgallagher.com/pure-css-speech-bubbles/demo/*/
+
+.selection_bubble {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #009999;
+  z-index: 2000;
+}
+
+.selection_bubble a:visited {
+  color: white;
+  font-size: 1.2em;
+}
+
+.selection_bubble a:hover {
+  color: grey;
+  font-size: 1.2em;
+}

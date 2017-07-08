@@ -20,6 +20,13 @@ if (localStorage.getItem(save_address) != null) {
 insert_main();
 // At the very start add the buttons
 insertButton();
+var MOUSE_VISITED_CLASSNAME = 'crx_mouse_visited';
+var prevDOM = null;
+
+// Add bubble to the top of the page.
+var bubbleDOM = document.createElement('div');
+bubbleDOM.setAttribute('class', 'selection_bubble');
+document.body.appendChild(bubbleDOM);
 
 function insertButton() {
     var to_match = 'a[class="';
@@ -157,3 +164,44 @@ function process() {
     insert_main();
     insertButton();
 }
+
+// https://stackoverflow.com/questions/4409378/text-selection-and-bubble-overlay-as-chrome-extension
+// Move that bubble to the appropriate location.
+function renderBubble(mouseX, mouseY, selection) {
+  bubbleDOM.innerHTML = selection;
+  bubbleDOM.style.top = mouseY + 'px';
+  bubbleDOM.style.left = mouseX + 'px';
+  bubbleDOM.style.visibility = 'visible';
+}
+
+// https://stackoverflow.com/questions/4445102/google-chrome-extension-highlight-the-div-that-the-mouse-is-hovering-over
+document.addEventListener('mousemove', function (e) {
+  var srcElement = e.srcElement;
+  // Lets check if our underlying element is a DIV.
+  var cls = srcElement.className;
+  if (cls.indexOf('related-item-dismissable') !== -1 ||
+        cls.indexOf('related-list-item') !== -1) {
+
+    // For NPE checking, we check safely. We need to remove the class name
+    // Since we will be styling the new one after.
+    if (prevDOM != null) {
+      prevDOM.classList.remove(MOUSE_VISITED_CLASSNAME);
+      bubbleDOM.style.visibility = 'hidden';
+    }
+
+    // Add a visited class name to the element. So we can style it.
+    srcElement.classList.add(MOUSE_VISITED_CLASSNAME);
+    var selection = '<a href="http://github.com">Link 1</a>\
+    <br /><br />\
+    <a href="http://youtube.com">Link 2</a>';
+    // var selection = window.getSelection().toString();
+    if (selection.length > 0) {
+        renderBubble(e.clientX - e.offsetX, e.clientY - e.offsetY, selection);
+    }
+
+    // The current element is now the previous. So we can remove the class
+    // during the next iteration.
+    prevDOM = srcElement;
+    // window.open("hover_popup.html", "extension_popup", "width=300,height=400,status=no,scrollbars=yes,resizable=no");
+  }
+}, false);
